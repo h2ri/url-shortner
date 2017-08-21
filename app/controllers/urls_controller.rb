@@ -24,11 +24,10 @@ class UrlsController < ApplicationController
   end
 
   def generate_base62_short_url(short_url_generator_id)
-    chars = ['0'..'9', 'A'..'Z', 'a'..'z'].map { |range| range.to_a }.flatten
-    # 6.times.map { chars.sample }.join
+    @chars = ['0'..'9', 'A'..'Z', 'a'..'z'].map { |range| range.to_a }.flatten
     short_url = ""
     while short_url_generator_id > 0 do
-      short_url << chars[short_url_generator_id % 62]
+      short_url << @chars[short_url_generator_id % 62]
       short_url_generator_id = short_url_generator_id / 62
     end
     short_url
@@ -88,7 +87,7 @@ class UrlsController < ApplicationController
   def find_url
     #get the id from slug
     count = 0
-    params[:id].reverse.split("").each { |x| count = count * 62 + chars.index(x)  }
+    params[:id].reverse.split("").each { |x| count = count * 62 + @chars.index(x)  }
     @url = Url.find_by_short_url(params[:id])
   end
 
