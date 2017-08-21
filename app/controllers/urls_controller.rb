@@ -1,26 +1,20 @@
 class UrlsController < ApplicationController
-  #before_action :set_url, only: [:show, :edit, :update, :destroy]
   before_action :find_url, only: [:show]
 
   $chars = ['0'..'9', 'A'..'Z', 'a'..'z'].map { |range| range.to_a }.flatten
-  # GET /urls
-  # GET /urls.json
   def index
     @urls = Url.all
   end
 
-  # GET /urls/1
-  # GET /urls/1.json
   def show
     redirect_to url_for(@url.original_url)
   end
 
-  # GET /urls/new
   def new
     @url = Url.new
   end
 
-  # GET /urls/1/edit
+
   def edit
   end
 
@@ -48,44 +42,11 @@ class UrlsController < ApplicationController
         render json: @url.errors, status: :unprocessable_entity
       end
     end
-    #respond_to do |format|
-    #if @url.save
-      # format.html { redirect_to @url, notice: 'Url was successfully created.' }
-      # format.json { render :show, status: :created, location: @url }
-
-    #else
-      # format.html { render :new }
-      # format.json { render json: @url.errors, status: :unprocessable_entity }
-      #render json: @url.errors, status: :unprocessable_entity
-    #end
   end
 
-  # PATCH/PUT /urls/1
-  # PATCH/PUT /urls/1.json
-  def update
-    respond_to do |format|
-      if @url.update(url_params)
-        format.html { redirect_to @url, notice: 'Url was successfully updated.' }
-        format.json { render :show, status: :ok, location: @url }
-      else
-        format.html { render :edit }
-        format.json { render json: @url.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /urls/1
-  # DELETE /urls/1.json
-  def destroy
-    @url.destroy
-    respond_to do |format|
-      format.html { redirect_to urls_url, notice: 'Url was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
 
   def find_url
-    #get the id from slug
+    #get the id from short_url_text
     count = 0
     params[:id].reverse.split("").each { |x| count = count * 62 + $chars.index(x)  }
     @url = Url.find_by_short_url(params[:id])
